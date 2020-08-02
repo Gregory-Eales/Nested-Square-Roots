@@ -1,0 +1,163 @@
+\documentclass[12pt, letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode} 
+\usepackage{amssymb}
+
+
+\newcommand{\TITLE}[1]{\item[#1]}
+\renewcommand{\algorithmiccomment}[1]{$/\!/$ \parbox[t]{4.5cm}{\raggedright #1}}
+% ugly hack for for/while
+\newbox\fixbox
+\renewcommand{\algorithmicdo}{\setbox\fixbox\hbox{\ {} }\hskip-\wd\fixbox}
+% end of hack
+\newcommand{\algcost}[2]{\strut\hfill\makebox[1.5cm][l]{#1}\makebox[4cm][l]{#2}}
+
+\title{Nested Square Roots}
+\author{Gregory Eales \thanks{ge33@student.london.ac.uk}}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+In this paper we discuss and find an algorithmic solution to a nested square root problem that requires the number of solutions to be found less than an upper bound n. We first provide insight into what may be eliminated from the search space by mathematic analysis of the particular equation and its theoretical unested form using theorems of irrational numbers.
+
+
+
+\end{abstract}
+
+\section{Introduction}
+
+This problem gives us equation below of nested square roots. We are tasked with finding the number pairs for which this equations can be denested such that it is equal to the sum of individual roots.
+
+\begin{equation}
+\sqrt{x + \sqrt{y} + \sqrt{z}}
+\end{equation}
+
+Here we have three integers such that $x \in  \mathbb{N}$ and $ y, z \in M$ where $  \{M \mid M \in \mathbb{N}, \sqrt{M} \notin\mathbb{N} \}$
+
+
+\begin{equation}
+\sqrt{x + \sqrt{y} + \sqrt{z}} = \sum_{i=1}^{k} s_{i} \sqrt{a_{i}}
+\end{equation}
+
+Let $F(n)$ be the number of unique sets of $a_{i}$ that can represent the denested sum and/or difference of the nested square root where $0 < x \leq n $, $s_{i} = \pm 1$, $a_{i} \in \mathbb{N}$, and $k < \infty$
+
+
+
+\section{Analysis}
+
+In order to solve this problem algorithmicly in a feasable amount of time we have to define the upper bound of search values for z, y, and the denested terms.
+
+\begin{equation}
+x + \sqrt{y} + \sqrt{z} = (\sum_{i=1}^{k} s_{i} \sqrt{a_{i}})^{2}
+\end{equation}
+
+We first start by squaring both sides and attempting to simplify the summation term. This can be done by a simple foiling and manipulation of the s term to allow for seperation.
+
+\begin{equation}
+x + \sqrt{y} + \sqrt{z} = \sum_{i=1}^{k} a_{i} + 2\sum_{j=1}^{k}\sum_{i=1}^{k} s_{ij} \sqrt{a_{i}a_{j}}\end{equation}
+
+This is where $s_{ij} = 0$ if $i=j$. We know that both radicals on the left side of the equations must be irrational due the fact that they cannot be perfect squares and we also know that any term $a_{i}$ is a rational positive integer. Because of these two facts we know that a possible class of solutions is when $x =  \sum_{i=1}^{k} a_{i}$ because they represent the rational portion of each side of the equation.
+
+\begin{equation}
+x =  \sum_{i=1}^{k} a_{i}
+\end{equation}
+
+The sum of each term in the unested form must be equal to x. This gives us an upper bound on the possible terms that can be used in the unested term and thus for y and z, decreasing our search space drasticly. Because both are positive integers and $ 0 < x < n < \infty$ we can find the finite set of terms $a_{i}$ such that y and z are non-perfect squares.
+
+
+\begin{equation}
+0 < k \leq x
+\end{equation}
+
+\begin{equation}
+0 < a_{i} \leq x
+\end{equation}
+
+
+we also know that $a_{i}  \ne a_{j}$ and we also know that no more than one $a_{i}$ can be a perfect square otherwise we will end up with irrational terms. removing the x term we have
+
+
+\begin{equation}
+\sqrt{y} + \sqrt{z} = 2\sum_{j=1}^{k}\sum_{i=1}^{k} s_{ij} \sqrt{a_{i}a_{j}}
+\end{equation}
+
+This tells us that both y and z must either be both factors of 4 or be factors of eachother such that when combined result in a number proportional to 4 because the right hand side of the quation is a multiple of 2. Lets also make a further assumption that the set of $ a_{i} $ is seprable such that
+
+
+\begin{equation}
+\sqrt{y} = 2\sum_{j=1}^{k}\sum_{i=1}^{k} s_{ij} \sqrt{a_{i}a_{j}}
+\end{equation}
+
+\begin{equation}
+ \sqrt{z} = 2\sum_{j=1}^{k}\sum_{i=1}^{k} s_{ij} \sqrt{a_{i}a_{j}}
+\end{equation}
+
+
+This pair of equation tells us something interesting about the nature and relationship of y and z. In order for there to be a solution under the given assumptions the terms that add up to z and the terms that add up to y must have common multiples of eachother. If the terms that multiply are not multiples of either y or z they then must be cancelled out by an equal negative term that when summed results in a zero.
+
+\begin{equation}
+y = 4\sum_{j=1}^{k}\sum_{i=1}^{k} a_{i}a_{j} + 4\sum_{j=1}^{k}\sum_{i=1}^{k}\sum_{l=1}^{k}\sum_{m=1}^{k} s_{ijlm} \sqrt{a_{i}a_{j}a_{l}a_{m}}
+\end{equation}
+
+\begin{equation}
+ z = 4\sum_{j=1}^{k}\sum_{i=1}^{k} a_{i}a_{j} + 4\sum_{j=1}^{k}\sum_{i=1}^{k}\sum_{l=1}^{k}\sum_{m=1}^{k} s_{ijlm} \sqrt{a_{i}a_{j}a_{l}a_{m}}
+\end{equation}
+
+where $s_{ijlm} = 0$ when $i=j=l=m$
+
+\section{Algorithm}
+
+\begin{algorithm}
+\begin{algorithmic}[1]
+  \TITLE{\textsc{F}$(n)$}
+    \algcost{\textit{cost}}{\textit{times}}
+  \For{ $x=1 \to n$}
+    \algcost{$c_1$}{$n$}
+  \State $\mathit{key} = A[j]$
+    \algcost{$c_2$}{$n-1$}
+  \State \Comment{Insert $A[j]$ to the sorted sequence $A[1..j-1]$}
+    \algcost{$0$}{$n-1$}
+  \State{$i = j-1$}
+    \algcost{$c_4$}{$n-1$}
+  \While{$i>0 $ \& $A[i]>key$}
+    \algcost{$c_5$}{$\sum_{j=2}^{n} t_j$}
+  \State $A[i+1]= A[i]$
+    \algcost{$c_6$}{$\sum_{j=2}^{n} (t_j-1)$}
+  \State $i = i-1$
+    \algcost{$c_7$}{$\sum_{j=2}^{n} (t_j-1)$}
+  \EndWhile
+  \State $A[i+1] = \mathit{key}$
+    \algcost{$c_8$}{$n-1$}
+  \EndFor
+\end{algorithmic}
+\end{algorithm}
+
+\section{Conclusion}
+
+\section{Misc Equations}
+
+\begin{equation}
+\sqrt{x + \sqrt{y} + \sqrt{z}} = \sum_{i=1}^{k} s_{i}  \prod_{j}^{l} \sqrt{p_{j}}
+\end{equation}
+
+\begin{equation}
+\sqrt{x + \sqrt{y} + \sqrt{z}} = \sum_{i=1}^{k}  \prod_{j}^{l} \sqrt{p_{j}} -  \sum_{i=1}^{k}  \prod_{j}^{l} \sqrt{p_{j}}
+\end{equation}
+
+\begin{equation}
+\sqrt{x + \sqrt{c}} = \sqrt{y} \pm \sqrt{z} 
+\end{equation}
+
+\begin{equation}
+c = (\sqrt{z} \pm \sqrt{y} )^{2} = z + y \pm \sqrt{yz}
+\end{equation}
+
+\begin{equation}
+\sqrt{x + \sqrt{c}} = \sqrt{y} \pm \sqrt{z} 
+\end{equation}
+
+
+\end{document}
