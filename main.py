@@ -115,7 +115,7 @@ def f(n):
 
 	table = [False] * int(1e8)
 
-
+	
 	# check each x for denested roots
 	for x in tqdm(range(1, n+1), "Finding De-Nested Roots"):
 		
@@ -130,26 +130,68 @@ def f(n):
 		if int(math.sqrt(x-1)) != math.sqrt(x-1):
 			denested_nums.append(1 + math.sqrt(x-1))
 		"""
-	
+		nums = []
 		
+	
 		# case where there are two denested roots
 		for i in range(1, x//2 + 1):
-		
+			
 			num1 = math.sqrt(i) + math.sqrt(x-i)
 			num2 = math.sqrt(i*(x-i))
 
+			
 			if int(num2) != num2:
 				
+				if True:
+					nums.append((i, x-i, i*(x-i)))
+
 				try: table[i**2 + (x-i)**2] = True
 				except: pass
+			
+		if x < 10 :	
+			print(x , " | ", nums)
 		
+		else:
+			print(x , "| ", nums)
+
+
+		# include all prime numbers less than N
+		# include all multiples of every number less than N
+		# include all non squares less than n
+
+		#n + (n-1) + (n-2) - n
+
+	
+
 	
 	counter = 0
-	for i in tqdm(range(int(1e8)),"Counting Unested Values"):
+	
+	for i in tqdm(range(int(1e7)),"Counting Unested Values"):
 		if table[i]:
 			counter+= 1
-
+	
 	return counter
+
+
+def cheat_two_root(n):
+
+	non_squares = get_non_squares(n)
+
+	sum_num = (n**2 - n) - (n**2 - n)/2 -n
+
+	square_terms = 0
+	
+	sqr_counter = 0
+	
+	for i in tqdm(range(1, n), "Adding Perf Squares"):
+		
+		if i**2 >= n:
+			break
+			
+		square_terms += n - i**2
+		sqr_counter += 1
+
+	return sum_num - square_terms - sqr_counter
 
 def test_f():
 	print("-"*85)
@@ -191,7 +233,13 @@ if __name__ == "__main__":
 	print("-"*85)
 	import time
 	t = time.time()
-	print(f(1200))
+	print(cheat_two_root(1))
+	print(cheat_two_root(2))
+	print(cheat_two_root(3))
+	print(cheat_two_root(5))
+	print(cheat_two_root(10))
+	#get_non_squares(5000000)
+	f(10)
 	print("it took: {} seconds".format(round(time.time()-t, 5)))
 	print("-"*85)
 	
