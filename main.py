@@ -233,13 +233,8 @@ if __name__ == "__main__":
 	print("-"*85)
 	import time
 	t = time.time()
-	print(cheat_two_root(1))
-	print(cheat_two_root(2))
-	print(cheat_two_root(3))
-	print(cheat_two_root(5))
-	print(cheat_two_root(10))
 	#get_non_squares(5000000)
-	f(10)
+	print(f(10))
 	print("it took: {} seconds".format(round(time.time()-t, 5)))
 	print("-"*85)
 	
