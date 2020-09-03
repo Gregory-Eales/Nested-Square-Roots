@@ -1,105 +1,14 @@
 import math
 from tqdm import tqdm
 
-
-def get_primes(n):
-	
-	primes = [2]
-
-	for i in tqdm(range(3, n), "Getting Primes"):
-
-			is_prime = True
-			for p in primes:
-
-				if p > math.sqrt(i):
-					is_prime = True
-					break
-				
-				if i%p == 0:
-					is_prime = False
-					break
-				
-			if is_prime:
-				primes.append(i)
-						
-	return primes
-
-# calculate nested root
-def get_nested_root(x,y,z):
-	return math.sqrt(x + math.sqrt(y) + math.sqrt(z))
-
-def get_unested_root(l):
-	num = 0
-	for i in l:
-		num+=math.sqrt(i)
-	return num
-
-# get all non perfect squares
-def get_non_squares(n):
-	non_squares = []
-	for i in tqdm(range(n+1), "Getting Non-Squares"):
-		num = math.sqrt(i)
-		if num != int(num):
-			non_squares.append(i)
-
-	return non_squares
-
-
-# gets the unested values using the wiki formula (https://en.wikipedia.org/wiki/Nested_radical)
-def get_unested(x, y, z):
-
-	s1 = (x + math.sqrt(x**2 - (math.sqrt(y)+math.sqrt(z))) )/2
-	s2 = (x - math.sqrt(x**2 - (math.sqrt(y)+math.sqrt(z))) )/2
-
-	s1 = math.sqrt(s1)
-	s2 = math.sqrt(s2)
-
-	return s1-s2, s1+s2
-
-# generate possible unested root terms
-def generate_number_combinations(n):
-	
-	nested = generate_nested_roots(n)
-	unested = generate_unested_roots(n)
-
-	return nested, unested
-
-# generate possible y and z terms
-def generate_nested_roots(n):
-	
-	# have to be divisble by 4
-	# sqrt(y) + sqrt(z) < x
-
-	nested_nums = []
-	for i in range(1, n):
-
-		if i < n//9 and int(math.sqrt(i))!= math.sqrt(i):
-			nested_nums.append(i)
-
-		elif (i%4 == 0 or i%9 == 0) and int(math.sqrt(i))!= math.sqrt(i):
-			nested_nums.append(i)			
-	
-	return nested_nums			
-
-# generate unested term
-def generate_unested_roots(n):
-
-	# have to add up to n
-	pass
-
-def generate_hash_table(n):
-
-	root_table = {}
-
-	for i in tqdm(range(n), "Generating Root Table"):
-		num = math.sqrt(i)
-		if num != int(num):
-			root_table[round(num, 5)] = i
+from lib.tests import test_f
+from lib.primes import get_primes
+from lib.misc import *
 
 
 
-	
-	
+
+
 # give the number of denested roots up to n
 def f(n):
 	
@@ -147,14 +56,36 @@ def f(n):
 
 				try: table[i**2 + (x-i)**2] = True
 				except: pass
-			
+
+		"""
+		# case where there are three denested roots
+		for i in range(x):
+			for j in range(x-i):
+
+				k = x - i - j
+
+				num1 = math.sqrt(i)
+				num2 = math.sqrt(j)
+				num3 = math.sqrt(k)
+
+				num = (num1 + num2 + num3)
+
+				if  num != int(num):
+
+					if True:
+						nums.append((i, x-i, i*(x-i)))
+
+					try: table[i**2 + (x-i)**2] = True
+					except: pass
+		"""
+		
+		"""
 		if x < 10 :	
 			print(x , " | ", nums)
 		
 		else:
 			print(x , "| ", nums)
-
-
+		"""
 		# include all prime numbers less than N
 		# include all multiples of every number less than N
 		# include all non squares less than n
@@ -173,70 +104,43 @@ def f(n):
 	return counter
 
 
-def cheat_two_root(n):
 
-	non_squares = get_non_squares(n)
+def brute_trio(n):
 
-	sum_num = (n**2 - n) - (n**2 - n)/2 -n
+	for x in tqdm(range(n)):
 
-	square_terms = 0
-	
-	sqr_counter = 0
-	
-	for i in tqdm(range(1, n), "Adding Perf Squares"):
-		
-		if i**2 >= n:
-			break
-			
-		square_terms += n - i**2
-		sqr_counter += 1
+		for y in range(x**2):
 
-	return sum_num - square_terms - sqr_counter
+			for z in range(x-y):
 
-def test_f():
-	print("-"*85)
-	r = f(10)
-	if r != 17:
-		return "Algorithm Failure @ f({}): got {} instead of {}".format(10, r, 17)
-	
-	r = f(15)
-	if r != 46:
-		return "Algorithm Failure @ f({}): got {} instead of {}".format(15, r, 46)
-	
-	r = f(20)
-	if r != 86:
-		return "Algorithm Failure @ f({}): got {} instead of {}".format(20, r, 86)
-	
-	"""	
-	if f(30) != 213:
-		return "Algorithm Failure @ f({})".format(30)
-	
-	
-	if f(100) != 2918:
-		return "Algorithm Failure @ f({})".format(100)
-	
-	
-	if f(5000) != 11134074:
-		return "Algorithm Failure @ f({})".format(5000)
+				for a in range(1, x):
 
-	"""
+					for b in range(1, x-a):
 
-	return "Algorithm Success"
+						for c in range(1, x-a-b):
+
+							 
+
+							root_z = math.sqrt(z)
+							root_y = math.sqrt(y)
+
+							if int(root_z) != root_z and int(root_y) != root_y:
+
+								root = root_z + root_y
+								roots = math.sqrt(a) + math.sqrt(b) + math.sqrt(c) - math.sqrt(x-a-b-c)
+
+								if abs(math.sqrt(x + root) - roots) < 0.0001:
+									print(x, y, z, "|", a, b, c, x-a-b-c)
+									
+
+
 
 
 
 if __name__ == "__main__":
 	
-	#print(test_f())
+	#print(test_f(f))
 	
-	
-	print("-"*85)
-	import time
-	t = time.time()
-	#get_non_squares(5000000)
-	print(f(10))
-	print("it took: {} seconds".format(round(time.time()-t, 5)))
-	print("-"*85)
-	
+	print(brute_trio(29))
 	
 
