@@ -57,7 +57,8 @@ x + \sqrt{y} + \sqrt{z} = (\sum_{i=1}^{k} s_{i} \sqrt{a_{i}})^{2}
 We first start by squaring both sides and attempting to simplify the summation term. This can be done by a simple foiling and manipulation of the s term to allow for seperation.
 
 \begin{equation}
-x + \sqrt{y} + \sqrt{z} = \sum_{i=1}^{k} a_{i} + 2\sum_{j=1}^{k}\sum_{i=1}^{k} s_{ij} \sqrt{a_{i}a_{j}}\end{equation}
+x + \sqrt{y} + \sqrt{z} = \sum_{i=1}^{k} a_{i} + 2\sum_{j=1}^{k}\sum_{i=1}^{k} s_{ij} \sqrt{a_{i}a_{j}} (1-\delta_{ij} )
+\end{equation}
 
 This is where $s_{ij} = 0$ if $i=j$. We know that both radicals on the left side of the equations must be irrational due the fact that they cannot be perfect squares and we also know that any term $a_{i}$ is a rational positive integer. Because of these two facts we know that a possible class of solutions is when $x =  \sum_{i=1}^{k} a_{i}$ because they represent the rational portion of each side of the equation.
 
@@ -81,18 +82,18 @@ we also know that $a_{i}  \ne a_{j}$ and we also know that no more than one $a_{
 
 
 \begin{equation}
-\sqrt{y} + \sqrt{z} = 2\sum_{j=1}^{k}\sum_{i=1}^{k} s_{ij} \sqrt{a_{i}a_{j}}
+\sqrt{y} + \sqrt{z} = \sum_{j=1}^{k}\sum_{i=1}^{k} s_{ij} \sqrt{a_{i}a_{j}}(1-\delta_{ij} )
 \end{equation}
 
 This tells us that both y and z must either be both factors of 4 or be factors of eachother such that when combined result in a number proportional to 4 because the right hand side of the quation is a multiple of 2. Lets also make a further assumption that the set of $ a_{i} $ is seprable such that
 
 
 \begin{equation}
-\sqrt{y} = 2\sum_{j=1}^{k}\sum_{i=1}^{k} s_{ij} \sqrt{a_{i}a_{j}}
+\sqrt{y} = \sum_{j=1}^{k}\sum_{i=1}^{k} s_{ij} \sqrt{a_{i}a_{j}}
 \end{equation}
 
 \begin{equation}
- \sqrt{z} = 2\sum_{j=1}^{k}\sum_{i=1}^{k} s_{ij} \sqrt{a_{i}a_{j}}
+ \sqrt{z} = \sum_{j=1}^{k}\sum_{i=1}^{k} s_{ij} \sqrt{a_{i}a_{j}}
 \end{equation}
 
 
