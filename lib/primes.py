@@ -1,7 +1,6 @@
 import math
 from tqdm import tqdm
 
-
 def get_primes(n):
 
 	primes = [2]
@@ -27,9 +26,5 @@ def get_primes(n):
 
 if __name__ == "__main__":
 	primes = get_primes(int(math.sqrt(600851475143)))
-	for p in reversed(primes):
-		if 600851475143 % p == 0:
-			print(p)
-			break
 
 
